@@ -12,6 +12,7 @@ ENV POETRY_CACHE_DIR=/opt/poetry-cache
 RUN apt-get update && apt-get install -y \
     build-essential \
     libpq-dev \
+    netcat-openbsd \
     && rm -rf /var/lib/apt/lists/*
 
 # Install Poetry
@@ -30,11 +31,15 @@ RUN poetry config virtualenvs.create false \
 # Copy project
 COPY . .
 
-# Collect static files
-RUN python manage.py collectstatic --noinput
+# Copy and make entrypoint script executable
+COPY entrypoint.sh /entrypoint.sh
+RUN chmod +x /entrypoint.sh
 
 # Expose port
 EXPOSE 8000
+
+# Set entrypoint
+ENTRYPOINT ["/entrypoint.sh"]
 
 # Run the application
 CMD ["gunicorn", "--bind", "0.0.0.0:8000", "social_media_backend.wsgi:application"]

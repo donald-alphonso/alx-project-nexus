@@ -27,36 +27,30 @@ services:
     depends_on:
       - db
       - redis
-    environment:
-      - DEBUG=True
-      - DATABASE_URL=postgresql://postgres:postgres@db:5432/social_media_db
-      - REDIS_URL=redis://redis:6379/0
+    env_file:
+      - .env.docker
 
   celery:
     build: .
-    command: celery -A social_media_backend worker -l info
+    command: celery -A social_media_backend worker --loglevel=info
     volumes:
       - .:/app
     depends_on:
       - db
       - redis
-    environment:
-      - DEBUG=True
-      - DATABASE_URL=postgresql://postgres:postgres@db:5432/social_media_db
-      - REDIS_URL=redis://redis:6379/0
+    env_file:
+      - .env.docker
 
   celery-beat:
     build: .
-    command: celery -A social_media_backend beat -l info
+    command: celery -A social_media_backend beat --loglevel=info
     volumes:
       - .:/app
     depends_on:
       - db
       - redis
-    environment:
-      - DEBUG=True
-      - DATABASE_URL=postgresql://postgres:postgres@db:5432/social_media_db
-      - REDIS_URL=redis://redis:6379/0
+    env_file:
+      - .env.docker
 
 volumes:
   postgres_data:
