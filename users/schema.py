@@ -4,10 +4,11 @@ GraphQL Schema for Users App
 
 import graphene
 from graphene_django import DjangoObjectType
-from graphene_django.filter import DjangoFilterConnectionField
+# from graphene_django.filter import DjangoFilterConnectionField
 from graphql_jwt.decorators import login_required
 from django.contrib.auth import authenticate
-from django.db import transaction
+from django.db import transaction, IntegrityError
+from django.core.exceptions import ValidationError
 
 from .models import User, Follow
 
@@ -54,7 +55,7 @@ class UserQuery(graphene.ObjectType):
     me = graphene.Field(UserType)
     
     # List queries
-    all_users = DjangoFilterConnectionField(UserType)
+    all_users = graphene.List(UserType)
     followers = graphene.List(UserType, user_id=graphene.ID(required=True))
     following = graphene.List(UserType, user_id=graphene.ID(required=True))
     
@@ -121,6 +122,29 @@ class CreateUser(graphene.Mutation):
     
     def mutate(self, info, username, email, password, first_name=None, last_name=None):
         try:
+            # Validation préalable
+            if User.objects.filter(username=username).exists():
+                return CreateUser(
+                    user=None, 
+                    success=False, 
+                    errors=[f"Username '{username}' already exists"]
+                )
+            
+            if User.objects.filter(email=email).exists():
+                return CreateUser(
+                    user=None, 
+                    success=False, 
+                    errors=[f"Email '{email}' already exists"]
+                )
+            
+            # Validation du mot de passe
+            if len(password) < 8:
+                return CreateUser(
+                    user=None, 
+                    success=False, 
+                    errors=["Password must be at least 8 characters long"]
+                )
+            
             with transaction.atomic():
                 user = User.objects.create_user(
                     username=username,
@@ -130,8 +154,26 @@ class CreateUser(graphene.Mutation):
                     last_name=last_name or ''
                 )
                 return CreateUser(user=user, success=True, errors=[])
+                
+        except IntegrityError as e:
+            if 'username' in str(e).lower():
+                return CreateUser(user=None, success=False, errors=["Username already exists"])
+            elif 'email' in str(e).lower():
+                return CreateUser(user=None, success=False, errors=["Email already exists"])
+            else:
+                return CreateUser(user=None, success=False, errors=["User creation failed: duplicate data"])
+                
+        except ValidationError as e:
+            error_messages = []
+            if hasattr(e, 'message_dict'):
+                for field, messages in e.message_dict.items():
+                    error_messages.extend([f"{field}: {msg}" for msg in messages])
+            else:
+                error_messages = [str(e)]
+            return CreateUser(user=None, success=False, errors=error_messages)
+            
         except Exception as e:
-            return CreateUser(user=None, success=False, errors=[str(e)])
+            return CreateUser(user=None, success=False, errors=[f"User creation failed: {str(e)}"])
 
 
 class UpdateProfile(graphene.Mutation):

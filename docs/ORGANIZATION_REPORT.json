@@ -1,0 +1,297 @@
+{
+  "organization_date": "2025-01-09",
+  "project_name": "ALX Project Nexus",
+  "moved_files": [
+    {
+      "file": "SWAGGER_DOCUMENTATION_FINAL_REPORT.md",
+      "from": "C:\\Users\\donald.ahossi\\Desktop\\Alx\\backend_prodev\\alx-project-nexus\\SWAGGER_DOCUMENTATION_FINAL_REPORT.md",
+      "to": "C:\\Users\\donald.ahossi\\Desktop\\Alx\\backend_prodev\\alx-project-nexus\\docs\\api\\SWAGGER_DOCUMENTATION_FINAL_REPORT.md"
+    },
+    {
+      "file": "REPONSE_FINALE_COMPLETE.md",
+      "from": "C:\\Users\\donald.ahossi\\Desktop\\Alx\\backend_prodev\\alx-project-nexus\\REPONSE_FINALE_COMPLETE.md",
+      "to": "C:\\Users\\donald.ahossi\\Desktop\\Alx\\backend_prodev\\alx-project-nexus\\docs\\api\\REPONSE_FINALE_COMPLETE.md"
+    },
+    {
+      "file": "documentation_swagger_complete.json",
+      "from": "C:\\Users\\donald.ahossi\\Desktop\\Alx\\backend_prodev\\alx-project-nexus\\documentation_swagger_complete.json",
+      "to": "C:\\Users\\donald.ahossi\\Desktop\\Alx\\backend_prodev\\alx-project-nexus\\docs\\api\\documentation_swagger_complete.json"
+    },
+    {
+      "file": "PRESENTATION_ALX.md",
+      "from": "C:\\Users\\donald.ahossi\\Desktop\\Alx\\backend_prodev\\alx-project-nexus\\PRESENTATION_ALX.md",
+      "to": "C:\\Users\\donald.ahossi\\Desktop\\Alx\\backend_prodev\\alx-project-nexus\\docs\\PRESENTATION_ALX.md"
+    },
+    {
+      "file": "TEST_COMPLET_FINAL.py",
+      "from": "C:\\Users\\donald.ahossi\\Desktop\\Alx\\backend_prodev\\alx-project-nexus\\TEST_COMPLET_FINAL.py",
+      "to": "C:\\Users\\donald.ahossi\\Desktop\\Alx\\backend_prodev\\alx-project-nexus\\scripts\\tests\\TEST_COMPLET_FINAL.py"
+    },
+    {
+      "file": "TEST_ENDPOINTS_RAPIDE.py",
+      "from": "C:\\Users\\donald.ahossi\\Desktop\\Alx\\backend_prodev\\alx-project-nexus\\TEST_ENDPOINTS_RAPIDE.py",
+      "to": "C:\\Users\\donald.ahossi\\Desktop\\Alx\\backend_prodev\\alx-project-nexus\\scripts\\tests\\TEST_ENDPOINTS_RAPIDE.py"
+    },
+    {
+      "file": "CONFIGURE_SWAGGER_ENGLISH.py",
+      "from": "C:\\Users\\donald.ahossi\\Desktop\\Alx\\backend_prodev\\alx-project-nexus\\CONFIGURE_SWAGGER_ENGLISH.py",
+      "to": "C:\\Users\\donald.ahossi\\Desktop\\Alx\\backend_prodev\\alx-project-nexus\\scripts\\utils\\CONFIGURE_SWAGGER_ENGLISH.py"
+    },
+    {
+      "file": "SETUP_CELERY_SWAGGER.py",
+      "from": "C:\\Users\\donald.ahossi\\Desktop\\Alx\\backend_prodev\\alx-project-nexus\\SETUP_CELERY_SWAGGER.py",
+      "to": "C:\\Users\\donald.ahossi\\Desktop\\Alx\\backend_prodev\\alx-project-nexus\\scripts\\utils\\SETUP_CELERY_SWAGGER.py"
+    },
+    {
+      "file": "SETUP_PRODUCTION_SWAGGER.py",
+      "from": "C:\\Users\\donald.ahossi\\Desktop\\Alx\\backend_prodev\\alx-project-nexus\\SETUP_PRODUCTION_SWAGGER.py",
+      "to": "C:\\Users\\donald.ahossi\\Desktop\\Alx\\backend_prodev\\alx-project-nexus\\scripts\\utils\\SETUP_PRODUCTION_SWAGGER.py"
+    },
+    {
+      "file": "SWAGGER_INTERFACE_ALX.py",
+      "from": "C:\\Users\\donald.ahossi\\Desktop\\Alx\\backend_prodev\\alx-project-nexus\\SWAGGER_INTERFACE_ALX.py",
+      "to": "C:\\Users\\donald.ahossi\\Desktop\\Alx\\backend_prodev\\alx-project-nexus\\scripts\\utils\\SWAGGER_INTERFACE_ALX.py"
+    },
+    {
+      "file": "SOLUTION_FINALE_ALX.py",
+      "from": "C:\\Users\\donald.ahossi\\Desktop\\Alx\\backend_prodev\\alx-project-nexus\\SOLUTION_FINALE_ALX.py",
+      "to": "C:\\Users\\donald.ahossi\\Desktop\\Alx\\backend_prodev\\alx-project-nexus\\scripts\\utils\\SOLUTION_FINALE_ALX.py"
+    },
+    {
+      "file": "FIX_URGENCE_ALX.py",
+      "from": "C:\\Users\\donald.ahossi\\Desktop\\Alx\\backend_prodev\\alx-project-nexus\\FIX_URGENCE_ALX.py",
+      "to": "C:\\Users\\donald.ahossi\\Desktop\\Alx\\backend_prodev\\alx-project-nexus\\scripts\\utils\\FIX_URGENCE_ALX.py"
+    }
+  ],
+  "deleted_files": [
+    "TEST_RAPIDE_NAVIGATEUR.txt",
+    "celerybeat-schedule"
+  ],
+  "final_structure": {
+    "root": {
+      "directories": [
+        "docs",
+        "interactions",
+        "logs",
+        "posts",
+        "scripts",
+        "social_media_backend",
+        "users"
+      ],
+      "files": [
+        "docker-compose.yml",
+        "Dockerfile",
+        "entrypoint.sh",
+        "manage.py",
+        "pyproject.toml",
+        "railway.json",
+        "README.md",
+        "requirements-local.txt",
+        "requirements.txt"
+      ]
+    },
+    "docs": {
+      "directories": [
+        "api",
+        "guides"
+      ],
+      "files": [
+        "FINAL_STATUS_REPORT.md",
+        "FINAL_STATUS_SUMMARY.md",
+        "INDEX.md",
+        "NEXT_STEPS_ALX.md",
+        "PRESENTATION_ALX.md",
+        "PRESENTATION_TEMPLATE.md",
+        "PROJECT_FINAL_SUMMARY.md",
+        "PROJET_FINAL_RESUME.md",
+        "README.md",
+        "README_NEW.md"
+      ]
+    },
+    "docs\\api": {
+      "directories": [],
+      "files": [
+        "DATABASE_SCHEMA.sql",
+        "documentation_swagger_complete.json",
+        "DOCUMENTATION_SWAGGER_FINALE.md",
+        "ERD_SAMPLE_DATA.md",
+        "ERD_SPECIFICATION.md",
+        "REPONSE_FINALE_COMPLETE.md",
+        "REQUETES_COPIER_COLLER.md",
+        "REQUETES_CORRIGEES_FINALES.md",
+        "REQUETES_ESSENTIELLES.md",
+        "REQUETES_GRAPHQL.md",
+        "SWAGGER_DOCUMENTATION_FINAL_REPORT.md"
+      ]
+    },
+    "docs\\guides": {
+      "directories": [],
+      "files": [
+        "GUIDE_AUTHENTIFICATION_COMPLET.md",
+        "GUIDE_DEBUTANT_COMPLET.md",
+        "GUIDE_LIKES.md",
+        "GUIDE_TEST_COMPLET.md",
+        "GUIDE_TEST_NAVIGATEUR_FINAL.md",
+        "GUIDE_TEST_NAVIGATEUR_SIMPLE.md",
+        "GUIDE_ULTRA_SIMPLE.md",
+        "TESTS_SIMPLES.md",
+        "TEST_SANS_AUTH.md"
+      ]
+    },
+    "interactions": {
+      "directories": [
+        "migrations"
+      ],
+      "files": [
+        "admin.py",
+        "apps.py",
+        "models.py",
+        "schema.py",
+        "tasks.py",
+        "tests.py",
+        "views.py",
+        "__init__.py"
+      ]
+    },
+    "interactions\\migrations": {
+      "directories": [],
+      "files": [
+        "0001_initial.py",
+        "0002_initial.py",
+        "0003_initial.py",
+        "__init__.py"
+      ]
+    },
+    "logs": {
+      "directories": [],
+      "files": [
+        "django.log"
+      ]
+    },
+    "posts": {
+      "directories": [
+        "management",
+        "migrations"
+      ],
+      "files": [
+        "admin.py",
+        "apps.py",
+        "models.py",
+        "schema.py",
+        "tests.py",
+        "views.py",
+        "__init__.py"
+      ]
+    },
+    "posts\\management": {
+      "directories": [
+        "commands"
+      ],
+      "files": [
+        "__init__.py"
+      ]
+    },
+    "posts\\management\\commands": {
+      "directories": [],
+      "files": [
+        "create_sample_data.py",
+        "__init__.py"
+      ]
+    },
+    "posts\\migrations": {
+      "directories": [],
+      "files": [
+        "0001_initial.py",
+        "0002_initial.py",
+        "__init__.py"
+      ]
+    },
+    "scripts": {
+      "directories": [
+        "tests",
+        "utils"
+      ],
+      "files": []
+    },
+    "scripts\\tests": {
+      "directories": [],
+      "files": [
+        "AUDIT_SECURITE.py",
+        "DEMO_LIKES.py",
+        "FINAL_READINESS_CHECK.py",
+        "FINAL_VALIDATION_TEST.py",
+        "TEST_AUTHENTIFICATION.py",
+        "TEST_CLARTE_DEBUTANT.py",
+        "TEST_COMPLET_FINAL.py",
+        "TEST_ENDPOINTS_RAPIDE.py",
+        "TEST_FRONTEND_INTEGRATION.py",
+        "TEST_POSTS_LIKES.py"
+      ]
+    },
+    "scripts\\utils": {
+      "directories": [],
+      "files": [
+        "AUDIT_SWAGGER_COMPLET.py",
+        "CONFIGURE_SWAGGER_ENGLISH.py",
+        "CORRIGER_REQUETES.py",
+        "FIX_AUTH_DEFINITIF.py",
+        "FIX_SIGNATURE_ERROR.py",
+        "FIX_URGENCE_ALX.py",
+        "GENERER_TOKEN_FRAIS.py",
+        "NETTOYAGE_FINAL.py",
+        "ORGANIZE_PROJECT.py",
+        "SETUP_CELERY_SWAGGER.py",
+        "SETUP_PRODUCTION_SWAGGER.py",
+        "SOLUTION_FINALE_ALX.py",
+        "SWAGGER_INTERFACE_ALX.py",
+        "VERIFICATION_FINALE.py"
+      ]
+    },
+    "social_media_backend": {
+      "directories": [
+        "templates"
+      ],
+      "files": [
+        "api_views.py",
+        "asgi.py",
+        "celery.py",
+        "error_handlers.py",
+        "schema.py",
+        "settings.py",
+        "simple_swagger.py",
+        "swagger_views.py",
+        "urls.py",
+        "wsgi.py",
+        "__init__.py"
+      ]
+    },
+    "social_media_backend\\templates": {
+      "directories": [],
+      "files": [
+        "swagger_docs.html"
+      ]
+    },
+    "users": {
+      "directories": [
+        "migrations"
+      ],
+      "files": [
+        "admin.py",
+        "apps.py",
+        "models.py",
+        "schema.py",
+        "tasks.py",
+        "tests.py",
+        "views.py",
+        "__init__.py"
+      ]
+    },
+    "users\\migrations": {
+      "directories": [],
+      "files": [
+        "0001_initial.py",
+        "__init__.py"
+      ]
+    }
+  }
+}

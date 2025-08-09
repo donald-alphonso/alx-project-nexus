@@ -22,7 +22,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/5.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = config('SECRET_KEY', default='django-insecure-gk+s44id-d2-q*fs5x(5whp(j2rv0f0!*msdpwh#1*7h$xd27%')
+SECRET_KEY = 'eibdWBbjdl5TIv7TfAo2gYFPCVOdS31yLBVEz9IUKcfCsOUsgfAwgsHQV4h4Z-5pd48'
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = config('DEBUG', default=True, cast=bool)
@@ -42,11 +42,13 @@ INSTALLED_APPS = [
     'graphene_django',
     'corsheaders',
     'rest_framework',
+    'drf_spectacular',
     
     # Local apps
     'users',
     'posts',
     'interactions',
+    # 'api',
 ]
 
 MIDDLEWARE = [
@@ -59,6 +61,8 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    # Custom error handling middleware
+    'social_media_backend.error_handlers.GraphQLErrorMiddleware',
 ]
 
 ROOT_URLCONF = 'social_media_backend.urls'
@@ -66,7 +70,7 @@ ROOT_URLCONF = 'social_media_backend.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [BASE_DIR / 'templates'],
+        'DIRS': [],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -147,6 +151,12 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 # Custom User Model
 AUTH_USER_MODEL = 'users.User'
 
+# Authentication Backends
+AUTHENTICATION_BACKENDS = [
+    'graphql_jwt.backends.JSONWebTokenBackend',
+    'django.contrib.auth.backends.ModelBackend',
+]
+
 # GraphQL Configuration
 GRAPHENE = {
     'SCHEMA': 'social_media_backend.schema.schema',
@@ -189,28 +199,177 @@ REST_FRAMEWORK = {
     ],
     'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
     'PAGE_SIZE': 20,
+    'DEFAULT_SCHEMA_CLASS': 'drf_spectacular.openapi.AutoSchema',
+}
+
+# GraphQL JWT Configuration
+GRAPHQL_JWT = {
+    'JWT_VERIFY_EXPIRATION': True,
+    'JWT_LONG_RUNNING_REFRESH_TOKEN': True,
+    'JWT_EXPIRATION_DELTA': timedelta(minutes=60),
+    'JWT_REFRESH_EXPIRATION_DELTA': timedelta(days=7),
+    'JWT_ALGORITHM': 'HS256',
+    'JWT_SECRET_KEY': SECRET_KEY,
+    'JWT_ALLOW_ANY_CLASSES': [
+        'graphql_jwt.mutations.ObtainJSONWebToken',
+        'graphql_jwt.mutations.Refresh',
+        'graphql_jwt.mutations.Verify',
+    ],
+}
+
+# Swagger/OpenAPI Configuration
+SPECTACULAR_SETTINGS = {
+    'TITLE': 'ALX Project Nexus - GraphQL API',
+    'DESCRIPTION': '''ALX Project Nexus - Modern Social Media Platform
+
+A comprehensive GraphQL API for a modern social media platform built with Django.
+
+## Features
+- User Management: Registration, authentication, profiles
+- Content Creation: Posts, comments, media sharing  
+- Social Interactions: Likes, follows, notifications
+- Advanced Search: Full-text search, hashtags, filters
+- Real-time Updates: Live notifications and feeds
+- Moderation Tools: Content reporting and management
+
+## Authentication
+This API uses JWT (JSON Web Tokens) for authentication.
+
+### How to authenticate:
+1. Create an account using createUser mutation
+2. Login using tokenAuth mutation to get your JWT token
+3. Include the token in your requests: Authorization: JWT <your-token>
+
+## GraphQL Endpoint
+All API operations are available through the GraphQL endpoint:
+POST /graphql/
+
+## Available Operations
+- 20 Queries: Retrieve data (users, posts, feed, search, etc.)
+- 18 Mutations: Modify data (create, update, delete, like, follow, etc.)
+
+## Quick Start
+1. Navigate to /graphql/ for the GraphiQL interface
+2. Use the documentation explorer to discover all available operations
+3. Test queries and mutations directly in the browser
+
+Developed by Donald Ahossi - ALX Software Engineering Program 2025''',
+    'VERSION': '1.0.0',
+    'SERVE_INCLUDE_SCHEMA': False,
+    'SWAGGER_UI_SETTINGS': {
+        'deepLinking': True,
+        'persistAuthorization': True,
+        'displayOperationId': True,
+        'filter': True,
+        'tryItOutEnabled': True,
+    },
+    'COMPONENT_SPLIT_REQUEST': True,
+    'SORT_OPERATIONS': False,
+    'ENABLE_DJANGO_DEPLOY_CHECK': False,
+    'SERVE_PERMISSIONS': ['rest_framework.permissions.AllowAny'],
+    'SERVE_AUTHENTICATION': [],
 }
 
 # Logging Configuration
 LOGGING = {
     'version': 1,
     'disable_existing_loggers': False,
-    'handlers': {
-        'file': {
-            'level': 'INFO',
-            'class': 'logging.FileHandler',
-            'filename': BASE_DIR / 'logs' / 'django.log',
+    'formatters': {
+        'verbose': {
+            'format': '{levelname} {asctime} {module} {process:d} {thread:d} {message}',
+            'style': '{',
         },
+        'simple': {
+            'format': '{levelname} {message}',
+            'style': '{',
+        },
+    },
+    'handlers': {
         'console': {
             'level': 'INFO',
             'class': 'logging.StreamHandler',
+            'formatter': 'verbose',
+        },
+        'file': {
+            'level': 'INFO',
+            'class': 'logging.FileHandler',
+            'filename': '/tmp/django.log',  # Use /tmp for Docker compatibility
+            'formatter': 'verbose',
+        } if not DEBUG else {
+            'level': 'DEBUG',
+            'class': 'logging.StreamHandler',
+            'formatter': 'simple',
+        },
+    },
+    'loggers': {
+        'django': {
+            'handlers': ['console'],
+            'level': 'INFO',
+            'propagate': True,
+        },
+        'graphql': {
+            'handlers': ['console'],
+            'level': 'INFO',
+            'propagate': True,
+        },
+        'social_media_backend': {
+            'handlers': ['console'],
+            'level': 'DEBUG' if DEBUG else 'INFO',
+            'propagate': True,
         },
     },
     'root': {
-        'handlers': ['console', 'file'],
+        'handlers': ['console'],
         'level': 'INFO',
     },
 }
 
-# Create logs directory if it doesn't exist
-os.makedirs(BASE_DIR / 'logs', exist_ok=True)
+# Create logs directory if it doesn't exist (only in development)
+if DEBUG:
+    try:
+        os.makedirs(BASE_DIR / 'logs', exist_ok=True)
+    except Exception:
+        pass  # Ignore if can't create logs directory
+
+# ============================================================================
+# ERROR HANDLING CONFIGURATION
+# ============================================================================
+
+# Custom error handlers
+handler404 = 'social_media_backend.error_handlers.handle_404'
+handler500 = 'social_media_backend.error_handlers.handle_500'
+handler403 = 'social_media_backend.error_handlers.handle_403'
+
+# GraphQL Error Handling
+GRAPHQL_ERROR_HANDLING = {
+    'ENABLE_CUSTOM_ERRORS': True,
+    'LOG_ERRORS': True,
+    'INCLUDE_TRACEBACK': DEBUG,
+    'ERROR_CODES': {
+        'VALIDATION_ERROR': 'VALIDATION_001',
+        'AUTHENTICATION_REQUIRED': 'AUTH_001',
+        'PERMISSION_DENIED': 'AUTH_002',
+        'NOT_FOUND': 'RESOURCE_001',
+        'DATABASE_ERROR': 'DB_001',
+        'INTEGRITY_ERROR': 'DB_002',
+        'INTERNAL_ERROR': 'SERVER_001',
+        'RATE_LIMIT_EXCEEDED': 'RATE_001',
+    }
+}
+
+# Rate Limiting Configuration
+RATE_LIMITING = {
+    'ENABLE': True,
+    'MAX_REQUESTS_PER_MINUTE': 100,
+    'MAX_REQUESTS_PER_HOUR': 1000,
+    'BLOCK_DURATION': 300,  # 5 minutes
+}
+
+# API Security Configuration
+API_SECURITY = {
+    'REQUIRE_HTTPS': not DEBUG,
+    'ENABLE_CORS': True,
+    'MAX_REQUEST_SIZE': 10 * 1024 * 1024,  # 10MB
+    'TIMEOUT': 30,
+    'ENABLE_RATE_LIMITING': True,
+}

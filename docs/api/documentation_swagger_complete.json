@@ -1,0 +1,202 @@
+{
+  "title": "🚀 ALX Project Nexus - Documentation API Complète",
+  "version": "1.0.0",
+  "description": "Documentation exhaustive de tous les endpoints GraphQL",
+  "authentication": {
+    "type": "JWT",
+    "header": "Authorization: JWT <token>",
+    "expiration": "60 minutes",
+    "refresh_expiration": "7 days",
+    "example": "Authorization: JWT eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
+  },
+  "endpoints": {
+    "graphql_main": {
+      "url": "http://localhost:8000/graphql/",
+      "description": "Interface GraphQL principale",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "total_endpoints": 38
+    },
+    "admin": {
+      "url": "http://localhost:8000/admin/",
+      "description": "Interface d'administration Django"
+    },
+    "swagger": {
+      "url": "http://localhost:8000/api/docs/",
+      "description": "Documentation Swagger interactive"
+    }
+  },
+  "queries": {
+    "users": {
+      "me": {
+        "description": "Récupérer les informations de l'utilisateur connecté",
+        "authentication": "Required",
+        "example": "query { me { id username email } }"
+      },
+      "allUsers": {
+        "description": "Récupérer tous les utilisateurs",
+        "authentication": "Optional",
+        "example": "query { allUsers { id username email followersCount } }"
+      },
+      "userById": {
+        "description": "Récupérer un utilisateur par ID",
+        "authentication": "Optional",
+        "example": "query { userById(id: 1) { id username email bio } }"
+      },
+      "searchUsers": {
+        "description": "Rechercher des utilisateurs",
+        "authentication": "Optional",
+        "example": "query { searchUsers(query: \"john\") { id username email } }"
+      }
+    },
+    "posts": {
+      "allPosts": {
+        "description": "Récupérer tous les posts",
+        "authentication": "Optional",
+        "example": "query { allPosts { id content author { username } likesCount commentsCount } }"
+      },
+      "postById": {
+        "description": "Récupérer un post par ID",
+        "authentication": "Optional",
+        "example": "query { postById(id: 1) { id content author { username } comments { content } } }"
+      },
+      "myPosts": {
+        "description": "Récupérer mes posts",
+        "authentication": "Required",
+        "example": "query { myPosts { id content likesCount commentsCount } }"
+      },
+      "searchPosts": {
+        "description": "Rechercher dans les posts",
+        "authentication": "Optional",
+        "example": "query { searchPosts(query: \"django\") { id content author { username } } }"
+      },
+      "feed": {
+        "description": "Feed personnalisé de l'utilisateur",
+        "authentication": "Required",
+        "example": "query { feed { id content author { username } likesCount } }"
+      }
+    },
+    "interactions": {
+      "myLikes": {
+        "description": "Récupérer mes likes",
+        "authentication": "Required",
+        "example": "query { myLikes { id post { content } createdAt } }"
+      },
+      "myComments": {
+        "description": "Récupérer mes commentaires",
+        "authentication": "Required",
+        "example": "query { myComments { id content post { id } createdAt } }"
+      },
+      "myFollows": {
+        "description": "Récupérer mes abonnements",
+        "authentication": "Required",
+        "example": "query { myFollows { id followed { username } createdAt } }"
+      },
+      "myNotifications": {
+        "description": "Récupérer mes notifications",
+        "authentication": "Required",
+        "example": "query { myNotifications { id message isRead createdAt } }"
+      }
+    }
+  },
+  "mutations": {
+    "user_management": {
+      "createUser": {
+        "description": "Créer un nouvel utilisateur",
+        "authentication": "None",
+        "example": "mutation {\n  createUser(\n    username: \"newuser\"\n    email: \"user@example.com\"\n    password: \"securepass123\"\n    firstName: \"John\"\n    lastName: \"Doe\"\n  ) {\n    user { id username email }\n    success\n    errors\n  }\n}"
+      },
+      "updateUser": {
+        "description": "Mettre à jour le profil utilisateur",
+        "authentication": "Required",
+        "example": "mutation {\n  updateUser(\n    bio: \"Développeur passionné\"\n    location: \"Paris, France\"\n  ) {\n    user { id bio location }\n    success\n    errors\n  }\n}"
+      },
+      "tokenAuth": {
+        "description": "Connexion et obtention du token JWT",
+        "authentication": "None",
+        "example": "mutation {\n  tokenAuth(\n    email: \"user@example.com\"\n    password: \"securepass123\"\n  ) {\n    token\n    payload\n  }\n}"
+      },
+      "refreshToken": {
+        "description": "Rafraîchir le token JWT",
+        "authentication": "Required",
+        "example": "mutation {\n  refreshToken(token: \"your_refresh_token\") {\n    token\n    payload\n  }\n}"
+      }
+    },
+    "post_management": {
+      "createPost": {
+        "description": "Créer un nouveau post",
+        "authentication": "Required",
+        "example": "mutation {\n  createPost(\n    content: \"Mon nouveau post avec #hashtag\"\n    visibility: \"public\"\n  ) {\n    post { id content hashtags }\n    success\n    errors\n  }\n}"
+      },
+      "updatePost": {
+        "description": "Mettre à jour un post",
+        "authentication": "Required",
+        "example": "mutation {\n  updatePost(\n    id: 1\n    content: \"Contenu mis à jour\"\n  ) {\n    post { id content }\n    success\n    errors\n  }\n}"
+      },
+      "deletePost": {
+        "description": "Supprimer un post",
+        "authentication": "Required",
+        "example": "mutation {\n  deletePost(id: 1) {\n    success\n    errors\n  }\n}"
+      }
+    },
+    "interactions": {
+      "likePost": {
+        "description": "Liker un post",
+        "authentication": "Required",
+        "example": "mutation {\n  likePost(postId: 1) {\n    like { id }\n    success\n    errors\n  }\n}"
+      },
+      "unlikePost": {
+        "description": "Retirer un like",
+        "authentication": "Required",
+        "example": "mutation {\n  unlikePost(postId: 1) {\n    success\n    errors\n  }\n}"
+      },
+      "createComment": {
+        "description": "Commenter un post",
+        "authentication": "Required",
+        "example": "mutation {\n  createComment(\n    postId: 1\n    content: \"Excellent post !\"\n  ) {\n    comment { id content }\n    success\n    errors\n  }\n}"
+      },
+      "followUser": {
+        "description": "Suivre un utilisateur",
+        "authentication": "Required",
+        "example": "mutation {\n  followUser(userId: 2) {\n    follow { id }\n    success\n    errors\n  }\n}"
+      },
+      "unfollowUser": {
+        "description": "Ne plus suivre un utilisateur",
+        "authentication": "Required",
+        "example": "mutation {\n  unfollowUser(userId: 2) {\n    success\n    errors\n  }\n}"
+      }
+    }
+  },
+  "use_cases": {
+    "scenario_1": {
+      "title": "Inscription et première publication",
+      "steps": [
+        "1. Créer un compte avec createUser",
+        "2. Se connecter avec tokenAuth",
+        "3. Créer un post avec createPost",
+        "4. Vérifier avec allPosts"
+      ]
+    },
+    "scenario_2": {
+      "title": "Interactions sociales",
+      "steps": [
+        "1. Se connecter avec tokenAuth",
+        "2. Rechercher des utilisateurs avec searchUsers",
+        "3. Suivre un utilisateur avec followUser",
+        "4. Liker des posts avec likePost",
+        "5. Commenter avec createComment"
+      ]
+    },
+    "scenario_3": {
+      "title": "Gestion de profil",
+      "steps": [
+        "1. Se connecter avec tokenAuth",
+        "2. Voir son profil avec me",
+        "3. Mettre à jour avec updateUser",
+        "4. Voir ses posts avec myPosts"
+      ]
+    }
+  }
+}

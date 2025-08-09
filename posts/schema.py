@@ -4,7 +4,7 @@ GraphQL Schema for Posts App
 
 import graphene
 from graphene_django import DjangoObjectType
-from graphene_django.filter import DjangoFilterConnectionField
+# from graphene_django.filter import DjangoFilterConnectionField
 from graphql_jwt.decorators import login_required
 from django.db import transaction
 from django.core.paginator import Paginator

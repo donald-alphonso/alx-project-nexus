@@ -5,10 +5,20 @@ Main GraphQL Schema for Social Media Backend
 import graphene
 import graphql_jwt
 
+# Import all app schemas
+from users.schema import UserQuery, UserMutation
+from posts.schema import PostQuery, PostMutation
+from interactions.schema import InteractionQuery, InteractionMutation
 
-class Query(graphene.ObjectType):
+
+class Query(
+    UserQuery,
+    PostQuery, 
+    InteractionQuery,
+    graphene.ObjectType
+):
     """
-    Root Query
+    Root Query combining all app queries
     """
     # Health check query
     health = graphene.String()
@@ -17,9 +27,14 @@ class Query(graphene.ObjectType):
         return "GraphQL API is running!"
 
 
-class Mutation(graphene.ObjectType):
+class Mutation(
+    UserMutation,
+    PostMutation,
+    InteractionMutation,
+    graphene.ObjectType
+):
     """
-    Root Mutation
+    Root Mutation combining all app mutations
     """
     # JWT Authentication mutations
     token_auth = graphql_jwt.ObtainJSONWebToken.Field()
