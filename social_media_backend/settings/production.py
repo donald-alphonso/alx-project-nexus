@@ -4,8 +4,48 @@ Optimized for Railway, Render, or Heroku deployment
 """
 
 import os
+from pathlib import Path
 from decouple import config
-from .base import *
+from datetime import timedelta
+
+# Build paths inside the project like this: BASE_DIR / 'subdir'.
+BASE_DIR = Path(__file__).resolve().parent.parent.parent
+
+# INSTALLED_APPS
+INSTALLED_APPS = [
+    'django.contrib.admin',
+    'django.contrib.auth',
+    'django.contrib.contenttypes',
+    'django.contrib.sessions',
+    'django.contrib.messages',
+    'django.contrib.staticfiles',
+    
+    # Third party apps
+    'graphene_django',
+    'corsheaders',
+    'rest_framework',
+    'drf_spectacular',
+    'django_celery_beat',
+    
+    # Local apps
+    'social_media_backend.apps.SocialMediaBackendConfig',
+    'users',
+    'posts',
+    'interactions',
+]
+
+# Middleware
+MIDDLEWARE = [
+    'django.middleware.security.SecurityMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
+    'django.contrib.sessions.middleware.SessionMiddleware',
+    'django.middleware.common.CommonMiddleware',
+    'django.middleware.csrf.CsrfViewMiddleware',
+    'django.contrib.auth.middleware.AuthenticationMiddleware',
+    'django.contrib.messages.middleware.MessageMiddleware',
+    'django.middleware.clickjacking.XFrameOptionsMiddleware',
+]
 
 # Try to import dj_database_url, fallback to manual parsing
 try:
@@ -31,9 +71,38 @@ DEBUG = False
 SECRET_KEY = config('SECRET_KEY', default='django-insecure-change-this-in-production')
 ALLOWED_HOSTS = config('ALLOWED_HOSTS', default='*').split(',')
 
-# Ensure ROOT_URLCONF is set (should come from base.py)
+# URL Configuration
 ROOT_URLCONF = 'social_media_backend.urls'
 WSGI_APPLICATION = 'social_media_backend.wsgi.application'
+
+# Templates
+TEMPLATES = [
+    {
+        'BACKEND': 'django.template.backends.django.DjangoTemplates',
+        'DIRS': [],
+        'APP_DIRS': True,
+        'OPTIONS': {
+            'context_processors': [
+                'django.template.context_processors.debug',
+                'django.template.context_processors.request',
+                'django.contrib.auth.context_processors.auth',
+                'django.contrib.messages.context_processors.messages',
+            ],
+        },
+    },
+]
+
+# Custom User Model
+AUTH_USER_MODEL = 'users.User'
+
+# Internationalization
+LANGUAGE_CODE = 'en-us'
+TIME_ZONE = 'UTC'
+USE_I18N = True
+USE_TZ = True
+
+# Default primary key field type
+DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 # Database - PostgreSQL only
 # Get DATABASE_URL with fallback for Railway
