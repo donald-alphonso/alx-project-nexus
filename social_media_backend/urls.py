@@ -3,9 +3,10 @@ URLs configuration for social_media_backend project.
 """
 
 from django.contrib import admin
-from django.urls import path
+from django.urls import path, include
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
+from . import views
 
 # Try to import GraphQL safely
 try:
@@ -48,9 +49,13 @@ urlpatterns = [
     # Admin interface
     path('admin/', admin.site.urls),
     
-    # Simple API endpoints
-    path('api/health/', lambda request: JsonResponse({'status': 'healthy', 'service': 'ALX Project Nexus'}), name='health-check'),
-    path('api/test/', lambda request: JsonResponse({'message': 'API is working!', 'endpoints': ['/', '/admin/', '/api/health/']}), name='api-test'),
+    # Presentation page for ALX validation
+    path('presentation/', views.presentation_view, name='presentation'),
+    
+    # API endpoints
+    path('api/health/', views.api_health, name='api-health'),
+    path('api/stats/', views.api_stats, name='api-stats'),
+    path('api/schema/', views.graphql_schema_info, name='api-schema'),
 ]
 
 # Add GraphQL if available

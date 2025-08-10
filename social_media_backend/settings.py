@@ -70,10 +70,13 @@ MIDDLEWARE = [
 
 ROOT_URLCONF = 'social_media_backend.urls'
 
+# Custom User Model
+AUTH_USER_MODEL = 'users.User'
+
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [BASE_DIR / 'templates'],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
