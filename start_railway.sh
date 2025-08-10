@@ -26,7 +26,7 @@ python manage.py migrate --noinput
 
 # Collecte des fichiers statiques
 echo "📦 Collecte des fichiers statiques..."
-python manage.py collectstatic --noinput
+python manage.py collectstatic --noinput --clear || echo "⚠️ collectstatic failed, continuing..."
 
 # Création du superuser si nécessaire
 echo "👤 Vérification du superuser..."
