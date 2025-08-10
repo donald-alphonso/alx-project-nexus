@@ -10,6 +10,12 @@ from django.http import JsonResponse
 from graphene_django.views import GraphQLView
 from django.views.decorators.csrf import csrf_exempt
 
+# Import GraphQL schema
+try:
+    from .schema import schema
+except ImportError:
+    schema = None
+
 # Try to import optional views with fallbacks
 try:
     from . import api_views
@@ -71,7 +77,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     
     # GraphQL endpoint (main API)
-    path('graphql/', csrf_exempt(GraphQLView.as_view(graphiql=True)), name='graphql'),
+    path('graphql/', csrf_exempt(GraphQLView.as_view(graphiql=True, schema=schema)), name='graphql'),
 ]
 
 # Add optional API documentation endpoints if modules are available
