@@ -25,9 +25,10 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'eibdWBbjdl5TIv7TfAo2gYFPCVOdS31yLBVEz9IUKcfCsOUsgfAwgsHQV4h4Z-5pd48'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = config('DEBUG', default=True, cast=bool)
+DEBUG = config('DEBUG', default=False, cast=bool)
 
-ALLOWED_HOSTS = config('ALLOWED_HOSTS', default='localhost,127.0.0.1', cast=lambda v: [s.strip() for s in v.split(',')])
+# ALLOWED_HOSTS for Railway deployment
+ALLOWED_HOSTS = config('ALLOWED_HOSTS', default='*', cast=lambda v: [s.strip() for s in v.split(',')])
 
 # Application definition
 INSTALLED_APPS = [
@@ -90,17 +91,35 @@ WSGI_APPLICATION = 'social_media_backend.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/5.1/ref/settings/#databases
 
-# Database Configuration (PostgreSQL)
-DATABASES = {
-    'default': {
-        'ENGINE': config('DB_ENGINE', default='django.db.backends.postgresql'),
-        'NAME': config('DB_NAME', default='social_media_db'),
-        'USER': config('DB_USER', default='postgres'),
-        'PASSWORD': config('DB_PASSWORD', default='postgres'),
-        'HOST': config('DB_HOST', default='localhost'),
-        'PORT': config('DB_PORT', default='5432'),
+# Database Configuration with Railway support
+try:
+    import dj_database_url
+    # Try to use DATABASE_URL from Railway
+    database_url = config('DATABASE_URL', default=None)
+    if database_url:
+        DATABASES = {
+            'default': dj_database_url.parse(database_url)
+        }
+    else:
+        # Fallback to PostgreSQL config
+        DATABASES = {
+            'default': {
+                'ENGINE': config('DB_ENGINE', default='django.db.backends.postgresql'),
+                'NAME': config('DB_NAME', default='social_media_db'),
+                'USER': config('DB_USER', default='postgres'),
+                'PASSWORD': config('DB_PASSWORD', default='postgres'),
+                'HOST': config('DB_HOST', default='localhost'),
+                'PORT': config('DB_PORT', default='5432'),
+            }
+        }
+except ImportError:
+    # Fallback to SQLite if dj_database_url not available
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.sqlite3',
+            'NAME': BASE_DIR / 'db.sqlite3',
+        }
     }
-}
 
 
 # Password validation
