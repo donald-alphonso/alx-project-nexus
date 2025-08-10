@@ -70,9 +70,8 @@ except ImportError:
 DEBUG = False
 SECRET_KEY = config('SECRET_KEY', default='django-insecure-change-this-in-production')
 
-# ALLOWED_HOSTS with Railway healthcheck support
-allowed_hosts_str = config('ALLOWED_HOSTS', default='*.railway.app,healthcheck.railway.app,donald-alx-nexus.railway.app')
-ALLOWED_HOSTS = [host.strip() for host in allowed_hosts_str.split(',')]
+# ALLOWED_HOSTS - Accept all hosts for Railway deployment
+ALLOWED_HOSTS = ['*']
 
 # URL Configuration
 ROOT_URLCONF = 'social_media_backend.urls'
