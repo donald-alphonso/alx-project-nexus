@@ -42,4 +42,6 @@ EOF
 
 # Démarrage du serveur
 echo "🌐 Démarrage du serveur Gunicorn..."
+# S'assurer que Django utilise les bons settings
+export DJANGO_SETTINGS_MODULE=social_media_backend.settings.production
 exec gunicorn social_media_backend.wsgi:application --bind 0.0.0.0:$PORT --workers 2 --timeout 120
