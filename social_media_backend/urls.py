@@ -76,8 +76,12 @@ urlpatterns = [
     # Admin interface
     path('admin/', admin.site.urls),
     
-    # GraphQL endpoint (main API)
-    path('graphql/', csrf_exempt(GraphQLView.as_view(graphiql=True, schema=schema)), name='graphql'),
+    # GraphQL endpoint (main API) - Test without schema first
+    path('graphql/', csrf_exempt(GraphQLView.as_view(graphiql=True)), name='graphql'),
+    
+    # Essential API endpoints (hardcoded for reliability)
+    path('api/health/', lambda request: JsonResponse({'status': 'healthy', 'service': 'ALX Project Nexus'}), name='health-check'),
+    path('api/test/', lambda request: JsonResponse({'message': 'API is working!', 'endpoints': ['/', '/admin/', '/graphql/', '/api/health/']}), name='api-test'),
 ]
 
 # Add optional API documentation endpoints if modules are available
