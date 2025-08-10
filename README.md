@@ -332,7 +332,7 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ## 👥 Authors
 
-- **ALX Student** - *Initial work* - [Your GitHub](https://github.com/your-username)
+- **ALX Student** - *Initial work* - [Your GitHub](https://github.com/donald-alphonso)
 
 ## 🙏 Acknowledgments
 
