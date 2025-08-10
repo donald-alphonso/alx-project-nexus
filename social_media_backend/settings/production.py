@@ -32,17 +32,35 @@ SECRET_KEY = config('SECRET_KEY', default='django-insecure-change-this-in-produc
 ALLOWED_HOSTS = config('ALLOWED_HOSTS', default='*').split(',')
 
 # Database - PostgreSQL only
-if HAS_DJ_DATABASE_URL:
+# Get DATABASE_URL with fallback for Railway
+database_url = config('DATABASE_URL', default=None)
+
+if not database_url:
+    # Fallback: Try Railway's internal PostgreSQL connection
+    database_url = config('PGDATABASE', default=None)
+    if database_url:
+        # Construct URL from Railway PostgreSQL variables
+        pg_user = config('PGUSER', default='postgres')
+        pg_password = config('PGPASSWORD', default='')
+        pg_host = config('PGHOST', default='localhost')
+        pg_port = config('PGPORT', default='5432')
+        database_url = f"postgresql://{pg_user}:{pg_password}@{pg_host}:{pg_port}/{database_url}"
+
+if HAS_DJ_DATABASE_URL and database_url:
     DATABASES = {
-        'default': dj_database_url.parse(
-            config('DATABASE_URL')
-        )
+        'default': dj_database_url.parse(database_url)
+    }
+elif database_url:
+    DATABASES = {
+        'default': parse_database_url(database_url)
     }
 else:
+    # Ultimate fallback - SQLite for testing
     DATABASES = {
-        'default': parse_database_url(
-            config('DATABASE_URL')
-        )
+        'default': {
+            'ENGINE': 'django.db.backends.sqlite3',
+            'NAME': BASE_DIR / 'db.sqlite3',
+        }
     }
 
 # Static files (CSS, JavaScript, Images)
