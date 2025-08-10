@@ -91,35 +91,19 @@ WSGI_APPLICATION = 'social_media_backend.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/5.1/ref/settings/#databases
 
-# Database Configuration with Railway support
-try:
-    import dj_database_url
-    # Try to use DATABASE_URL from Railway
-    database_url = config('DATABASE_URL', default=None)
-    if database_url:
-        DATABASES = {
-            'default': dj_database_url.parse(database_url)
-        }
-    else:
-        # Fallback to PostgreSQL config
-        DATABASES = {
-            'default': {
-                'ENGINE': config('DB_ENGINE', default='django.db.backends.postgresql'),
-                'NAME': config('DB_NAME', default='social_media_db'),
-                'USER': config('DB_USER', default='postgres'),
-                'PASSWORD': config('DB_PASSWORD', default='postgres'),
-                'HOST': config('DB_HOST', default='localhost'),
-                'PORT': config('DB_PORT', default='5432'),
-            }
-        }
-except ImportError:
-    # Fallback to SQLite if dj_database_url not available
-    DATABASES = {
-        'default': {
-            'ENGINE': 'django.db.backends.sqlite3',
-            'NAME': BASE_DIR / 'db.sqlite3',
-        }
+# Database Configuration - Force SQLite for Railway reliability
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': BASE_DIR / 'db.sqlite3',
     }
+}
+
+print(f"🔍 Database configured: {DATABASES['default']['ENGINE']}")
+print(f"📁 Database file: {DATABASES['default']['NAME']}")
+print(f"📦 INSTALLED_APPS count: {len(INSTALLED_APPS)}")
+print(f"🔧 DEBUG mode: {DEBUG}")
+print(f"🌐 ALLOWED_HOSTS: {ALLOWED_HOSTS}")
 
 
 # Password validation
