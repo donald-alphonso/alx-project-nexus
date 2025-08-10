@@ -1,0 +1,6 @@
+# Force Railway rebuild - timestamp: 2025-01-10 19:08
+# This file triggers a new deployment with updated variables and dependencies
+# Railway should now have:
+# - DATABASE_URL: postgresql://postgres:GgnxLwDNxXrmNgUNNeqckBgLhlxtRMzE@switchback.proxy.rlwy.net:35811/railway
+# - REDIS_URL: redis://default:eVrAmQjZojFomTyCenOeCBjzhzwdzLRf@shortline.proxy.rlwy.net:13172
+# - django-redis==5.4.0 in requirements.txt
