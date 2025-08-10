@@ -1,0 +1,24 @@
+# Script pour créer un superuser sur Railway
+# À exécuter dans la console Railway
+
+python manage.py shell --settings=social_media_backend.settings.production
+
+# Puis dans le shell Python :
+from django.contrib.auth import get_user_model
+User = get_user_model()
+
+# Créer le superuser
+if not User.objects.filter(username='admin').exists():
+    User.objects.create_superuser(
+        username='admin',
+        email='admin@alxprojectnexus.com',
+        password='admin123',
+        first_name='Admin',
+        last_name='ALX'
+    )
+    print('✅ Superuser créé: admin / admin123')
+else:
+    print('ℹ️ Superuser existe déjà')
+
+# Sortir du shell
+exit()
