@@ -6,6 +6,20 @@ export PORT=${PORT:-8000}
 
 echo "🚀 Démarrage ALX Project Nexus sur le port $PORT"
 
+# Debug: Afficher les variables d'environnement liées à la base de données
+echo "🔍 DEBUG: Variables d'environnement disponibles:"
+echo "DATABASE_URL: ${DATABASE_URL:-'NON DÉFINIE'}"
+echo "PGDATABASE: ${PGDATABASE:-'NON DÉFINIE'}"
+echo "PGUSER: ${PGUSER:-'NON DÉFINIE'}"
+echo "PGHOST: ${PGHOST:-'NON DÉFINIE'}"
+echo "PGPORT: ${PGPORT:-'NON DÉFINIE'}"
+echo "PGPASSWORD: ${PGPASSWORD:-'NON DÉFINIE (masqué)'}"
+echo "POSTGRES_URL: ${POSTGRES_URL:-'NON DÉFINIE'}"
+echo "DB_URL: ${DB_URL:-'NON DÉFINIE'}"
+echo "🔍 Toutes les variables avec 'DATA' ou 'PG':"
+env | grep -i -E '(data|pg|postgres)' || echo "Aucune variable trouvée"
+echo "---"
+
 # Migrations de base de données
 echo "📊 Exécution des migrations..."
 python manage.py migrate --settings=social_media_backend.settings.production --noinput
