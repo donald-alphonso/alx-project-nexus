@@ -31,6 +31,10 @@ DEBUG = False
 SECRET_KEY = config('SECRET_KEY', default='django-insecure-change-this-in-production')
 ALLOWED_HOSTS = config('ALLOWED_HOSTS', default='*').split(',')
 
+# Ensure ROOT_URLCONF is set (should come from base.py)
+ROOT_URLCONF = 'social_media_backend.urls'
+WSGI_APPLICATION = 'social_media_backend.wsgi.application'
+
 # Database - PostgreSQL only
 # Get DATABASE_URL with fallback for Railway
 database_url = config('DATABASE_URL', default=None)
