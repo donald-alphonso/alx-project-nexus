@@ -94,20 +94,18 @@ WSGI_APPLICATION = 'social_media_backend.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/5.1/ref/settings/#databases
 
-# Database Configuration - Force SQLite for Railway reliability
+# FORCE SQLite for Railway deployment
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
         'NAME': BASE_DIR / 'db.sqlite3',
     }
 }
-
-print(f"🔍 Database configured: {DATABASES['default']['ENGINE']}")
-print(f"📁 Database file: {DATABASES['default']['NAME']}")
-print(f"📦 INSTALLED_APPS count: {len(INSTALLED_APPS)}")
-print(f"🔧 DEBUG mode: {DEBUG}")
-print(f"🌐 ALLOWED_HOSTS: {ALLOWED_HOSTS}")
-
+print(f" Database configured: {DATABASES['default']['ENGINE']}")
+print(f" Database file: {DATABASES['default']['NAME']}")
+print(f" INSTALLED_APPS count: {len(INSTALLED_APPS)}")
+print(f" DEBUG mode: {DEBUG}")
+print(f" ALLOWED_HOSTS: {ALLOWED_HOSTS}")
 
 # Password validation
 # https://docs.djangoproject.com/en/5.1/ref/settings/#auth-password-validators
