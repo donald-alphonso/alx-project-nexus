@@ -4,21 +4,46 @@ Optimized for Railway, Render, or Heroku deployment
 """
 
 import os
-import dj_database_url
 from decouple import config
 from .base import *
+
+# Try to import dj_database_url, fallback to manual parsing
+try:
+    import dj_database_url
+    HAS_DJ_DATABASE_URL = True
+except ImportError:
+    HAS_DJ_DATABASE_URL = False
+    import urllib.parse as urlparse
+    
+    def parse_database_url(url):
+        parsed = urlparse.urlparse(url)
+        return {
+            'ENGINE': 'django.db.backends.postgresql',
+            'NAME': parsed.path[1:],
+            'USER': parsed.username,
+            'PASSWORD': parsed.password,
+            'HOST': parsed.hostname,
+            'PORT': parsed.port or 5432,
+        }
 
 # Security
 DEBUG = False
 SECRET_KEY = config('SECRET_KEY', default='django-insecure-change-this-in-production')
 ALLOWED_HOSTS = config('ALLOWED_HOSTS', default='*').split(',')
 
-# Database
-DATABASES = {
-    'default': dj_database_url.parse(
-        config('DATABASE_URL', default='sqlite:///db.sqlite3')
-    )
-}
+# Database - PostgreSQL only
+if HAS_DJ_DATABASE_URL:
+    DATABASES = {
+        'default': dj_database_url.parse(
+            config('DATABASE_URL')
+        )
+    }
+else:
+    DATABASES = {
+        'default': parse_database_url(
+            config('DATABASE_URL')
+        )
+    }
 
 # Static files (CSS, JavaScript, Images)
 STATIC_URL = '/static/'
