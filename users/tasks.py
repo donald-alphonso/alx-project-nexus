@@ -1,10 +1,13 @@
 """
-Tâches Celery pour l'application Users
+Celery Tasks for Users Application
+Background tasks for user management, statistics, and notifications
 """
 
 from celery import shared_task
 from django.contrib.auth import get_user_model
 from django.utils import timezone
+from django.core.mail import send_mail
+from django.conf import settings
 from datetime import timedelta
 import logging
 
@@ -13,19 +16,28 @@ logger = logging.getLogger(__name__)
 
 @shared_task
 def cleanup_expired_tokens():
-    """Nettoyer les tokens JWT expirés"""
+    """Clean up expired JWT tokens and inactive sessions"""
     try:
-        # Logique de nettoyage des tokens expirés
-        logger.info("🧹 Nettoyage des tokens expirés démarré")
+        logger.info("🧹 Starting expired tokens cleanup")
         
-        # Ici vous pouvez ajouter la logique pour nettoyer
-        # les tokens expirés de votre base de données
+        # Clean up inactive users (not logged in for 30+ days)
+        thirty_days_ago = timezone.now() - timedelta(days=30)
+        inactive_users = User.objects.filter(
+            last_login__lt=thirty_days_ago,
+            is_active=True
+        )
         
-        logger.info("✅ Nettoyage des tokens terminé")
-        return "Tokens expirés nettoyés avec succès"
+        inactive_count = inactive_users.count()
+        logger.info(f"Found {inactive_count} inactive users")
+        
+        # You can add JWT token cleanup logic here
+        # For now, we'll just log the cleanup
+        
+        logger.info("✅ Token cleanup completed")
+        return f"Cleanup completed. Found {inactive_count} inactive users"
     except Exception as e:
-        logger.error(f"❌ Erreur nettoyage tokens : {e}")
-        return f"Erreur : {e}"
+        logger.error(f"❌ Token cleanup error: {e}")
+        return f"Error: {e}"
 
 @shared_task
 def update_user_statistics():

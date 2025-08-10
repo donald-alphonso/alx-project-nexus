@@ -1,41 +1,41 @@
-# 📚 Documentation Index - ALX Project Nexus
+# 📚 ALX PROJECT NEXUS - DOCUMENTATION INDEX
 
-## 🎯 Documents Principaux
+## 🎯 **MAIN DOCUMENTATION**
 
-### 📋 Statut et Rapports
-- [`STATUS_FINAL_URGENT.md`](../STATUS_FINAL_URGENT.md) - Statut final urgent
-- [`VERIFICATION_FINALE_COMPLETE.md`](VERIFICATION_FINALE_COMPLETE.md) - Vérification complète
-- [`FINAL_STATUS_REPORT.md`](FINAL_STATUS_REPORT.md) - Rapport de statut final
-- [`RAPPORT_FINAL_ORGANISATION.md`](RAPPORT_FINAL_ORGANISATION.md) - Rapport d'organisation
+### 📖 **Essential Guides**
 
-### 🎤 Présentation ALX
-- [`PRESENTATION_ALX.md`](PRESENTATION_ALX.md) - Guide de présentation
-- [`PRESENTATION_TEMPLATE.md`](PRESENTATION_TEMPLATE.md) - Template de présentation
-- [`NEXT_STEPS_ALX.md`](NEXT_STEPS_ALX.md) - Prochaines étapes
+- **[README.md](../README.md)** - Main project guide
+- **[PRESENTATION_5MIN.md](PRESENTATION_5MIN.md)** - 5-minute presentation guide
+- **[PROJECT_OVERVIEW.md](PROJECT_OVERVIEW.md)** - Complete project overview
+- **[PRESENTATION_ALX_FINAL.md](PRESENTATION_ALX_FINAL.md)** - ALX final presentation
 
-### 🔧 Documentation Technique
-- [`api/`](api/) - Documentation API (11 fichiers)
-- [`guides/`](guides/) - Guides utilisateur (9 fichiers)
+### 📊 **Technical Reports**
 
-### 📊 Rapports Techniques
-- [`ORGANIZATION_REPORT.json`](ORGANIZATION_REPORT.json) - Rapport d'organisation
-- [`CLEANUP_SUMMARY.json`](CLEANUP_SUMMARY.json) - Résumé de nettoyage
+- **[RAPPORT_TACHES_ASYNCHRONES.md](RAPPORT_TACHES_ASYNCHRONES.md)** - Celery tasks documentation
+- **[VALIDATION_FINALE_ALX.md](VALIDATION_FINALE_ALX.md)** - Final validation report
+
+## 🔧 Technical Guides
+
+- **[guides/ADMIN_DASHBOARD_GUIDE.md](guides/ADMIN_DASHBOARD_GUIDE.md)** - Admin interface
+- **[guides/CELERY_GUIDE.md](guides/CELERY_GUIDE.md)** - Async tasks
+- **[guides/COMPLETE_USER_GUIDE.md](guides/COMPLETE_USER_GUIDE.md)** - User guide
+- **[guides/TESTING_GUIDE.md](guides/TESTING_GUIDE.md)** - Testing procedures
+
+## 🗄️ API Documentation
+
+- **[api/ERD_SPECIFICATION.md](api/ERD_SPECIFICATION.md)** - Database schema
+- **[api/REQUETES_GRAPHQL.md](api/REQUETES_GRAPHQL.md)** - GraphQL documentation
+- **[api/Social Media Backend - ERD](api/Social_Media_Backend_ERD.png)** - GraphQL image
+-
+
+## 🧪 Testing Scripts
+
+Located in `scripts/tests/`:
+
+- Quick validation tools
+- API testing utilities
+- System verification scripts
 
 ---
 
-## 🚀 Accès Rapide
-
-### Endpoints Principaux
-- **GraphQL API**: http://localhost:8000/graphql/
-- **Swagger UI**: http://localhost:8000/api/swagger/
-- **Documentation**: http://localhost:8000/api/docs/
-- **Gestion d'erreurs**: http://localhost:8000/api/error-handling/
-
-### Scripts Utiles
-- [`scripts/tests/VALIDATION_FINALE_COMPLETE.py`](../scripts/tests/VALIDATION_FINALE_COMPLETE.py)
-- [`scripts/utils/DEMARRAGE_RAPIDE.py`](../scripts/utils/DEMARRAGE_RAPIDE.py)
-- [`scripts/utils/NETTOYAGE_FINAL_COMMIT.py`](../scripts/utils/NETTOYAGE_FINAL_COMMIT.py)
-
----
-
-*Mis à jour le {datetime.now().strftime("%d/%m/%Y à %H:%M")}*
+*Updated: August 2025*

@@ -43,8 +43,10 @@ INSTALLED_APPS = [
     'corsheaders',
     'rest_framework',
     'drf_spectacular',
+    'django_celery_beat',
     
     # Local apps
+    'social_media_backend.apps.SocialMediaBackendConfig',
     'users',
     'posts',
     'interactions',
@@ -373,3 +375,56 @@ API_SECURITY = {
     'TIMEOUT': 30,
     'ENABLE_RATE_LIMITING': True,
 }
+
+# ============================================================================
+# CELERY CONFIGURATION
+# ============================================================================
+
+# Celery Broker Configuration
+CELERY_BROKER_URL = os.getenv('CELERY_BROKER_URL', 'redis://localhost:6379/1')
+CELERY_RESULT_BACKEND = os.getenv('CELERY_RESULT_BACKEND', 'redis://localhost:6379/1')
+
+# Import schedule configuration
+from .celery_schedule import (
+    CELERY_BEAT_SCHEDULE,
+    CELERY_TASK_ROUTES,
+    CELERY_TASK_CONFIG,
+    CELERY_MONITORING
+)
+
+# Apply Celery configuration
+locals().update(CELERY_TASK_CONFIG)
+locals().update(CELERY_MONITORING)
+
+# Celery Beat Schedule
+CELERY_BEAT_SCHEDULE = CELERY_BEAT_SCHEDULE
+CELERY_TASK_ROUTES = CELERY_TASK_ROUTES
+
+# Celery Timezone
+CELERY_TIMEZONE = TIME_ZONE
+
+# Celery Queues
+try:
+    from kombu import Queue
+    CELERY_TASK_DEFAULT_QUEUE = 'default'
+    CELERY_TASK_QUEUES = (
+        Queue('default'),
+        Queue('users'),
+        Queue('media'),
+        Queue('analytics'),
+        Queue('maintenance'),
+        Queue('emails'),
+    )
+except ImportError:
+    # Fallback if kombu not available
+    CELERY_TASK_DEFAULT_QUEUE = 'default'
+    CELERY_TASK_QUEUES = None
+
+# Celery Worker Configuration
+CELERY_WORKER_CONCURRENCY = os.getenv('CELERY_WORKER_CONCURRENCY', 4)
+CELERY_WORKER_MAX_TASKS_PER_CHILD = 1000
+CELERY_WORKER_DISABLE_RATE_LIMITS = False
+
+# Celery Logging
+CELERY_WORKER_HIJACK_ROOT_LOGGER = False
+CELERY_WORKER_LOG_COLOR = True

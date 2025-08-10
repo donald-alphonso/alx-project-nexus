@@ -71,17 +71,22 @@ class Command(BaseCommand):
             username = f'user{i+1}'
             email = f'user{i+1}@example.com'
             
-            if not User.objects.filter(username=username).exists():
-                user = User.objects.create_user(
-                    username=username,
-                    email=email,
-                    password='password123',
-                    first_name=f'User{i+1}',
-                    last_name='Test',
-                    bio=f'This is the bio for {username}. I love social media!',
-                    location=random.choice(['New York', 'London', 'Paris', 'Tokyo', 'Sydney'])
-                )
-                users.append(user)
+            # Get existing user or create new one
+            user, created = User.objects.get_or_create(
+                username=username,
+                defaults={
+                    'email': email,
+                    'password': 'password123',
+                    'first_name': f'User{i+1}',
+                    'last_name': 'Test',
+                    'bio': f'This is the bio for {username}. I love social media!',
+                    'location': random.choice(['New York', 'London', 'Paris', 'Tokyo', 'Sydney'])
+                }
+            )
+            if created:
+                user.set_password('password123')
+                user.save()
+            users.append(user)
         return users
 
     def create_follows(self, users):
@@ -130,6 +135,10 @@ class Command(BaseCommand):
 
     def create_posts(self, users, hashtags, count):
         """Create sample posts"""
+        if not users:
+            self.stdout.write(self.style.WARNING('No users available to create posts'))
+            return []
+        
         post_contents = [
             "Just finished building an amazing GraphQL API! 🚀",
             "Django is such a powerful framework for backend development.",
