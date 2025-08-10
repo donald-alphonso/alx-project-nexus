@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ALX Project Nexus - Social Media Backend</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; line-height: 1.6; color: #333; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); }
+        .container { max-width: 1200px; margin: 0 auto; padding: 20px; }
+        .header { text-align: center; color: white; margin-bottom: 40px; }
+        .header h1 { font-size: 3em; margin-bottom: 10px; text-shadow: 2px 2px 4px rgba(0,0,0,0.3); }
+        .header p { font-size: 1.2em; opacity: 0.9; }
+        .card { background: white; border-radius: 15px; padding: 30px; margin: 20px 0; box-shadow: 0 10px 30px rgba(0,0,0,0.1); }
+        .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; }
+        .endpoint { background: #f8f9fa; padding: 15px; border-radius: 8px; border-left: 4px solid #007bff; margin: 10px 0; }
+        .endpoint h4 { color: #007bff; margin-bottom: 5px; }
+        .endpoint code { background: #e9ecef; padding: 2px 6px; border-radius: 4px; font-size: 0.9em; }
+        .model { background: #e8f5e8; padding: 15px; border-radius: 8px; border-left: 4px solid #28a745; margin: 10px 0; }
+        .model h4 { color: #28a745; margin-bottom: 5px; }
+        .feature { background: #fff3cd; padding: 15px; border-radius: 8px; border-left: 4px solid #ffc107; margin: 10px 0; }
+        .feature h4 { color: #856404; margin-bottom: 5px; }
+        .stats { display: flex; justify-content: space-around; text-align: center; }
+        .stat { background: #007bff; color: white; padding: 20px; border-radius: 10px; min-width: 120px; }
+        .stat h3 { font-size: 2em; margin-bottom: 5px; }
+        .btn { display: inline-block; background: #007bff; color: white; padding: 12px 24px; text-decoration: none; border-radius: 6px; margin: 10px 5px; transition: background 0.3s; }
+        .btn:hover { background: #0056b3; }
+        .btn-success { background: #28a745; }
+        .btn-success:hover { background: #1e7e34; }
+        .tech-stack { display: flex; flex-wrap: wrap; gap: 10px; }
+        .tech { background: #6f42c1; color: white; padding: 8px 16px; border-radius: 20px; font-size: 0.9em; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🚀 ALX Project Nexus</h1>
+            <p>Social Media Backend with GraphQL API</p>
+        </div>
+
+        <div class="card">
+            <h2>📊 Project Statistics</h2>
+            <div class="stats">
+                <div class="stat">
+                    <h3>38</h3>
+                    <p>GraphQL Endpoints</p>
+                </div>
+                <div class="stat">
+                    <h3>11</h3>
+                    <p>Django Models</p>
+                </div>
+                <div class="stat">
+                    <h3>20</h3>
+                    <p>Queries</p>
+                </div>
+                <div class="stat">
+                    <h3>18</h3>
+                    <p>Mutations</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="grid">
+            <div class="card">
+                <h2>🔗 API Endpoints</h2>
+                <div class="endpoint">
+                    <h4>GraphQL API</h4>
+                    <code>http://localhost:8000/graphql/</code>
+                    <p>Main GraphQL endpoint with interactive GraphiQL interface</p>
+                </div>
+                <div class="endpoint">
+                    <h4>Admin Panel</h4>
+                    <code>http://localhost:8000/admin/</code>
+                    <p>Django admin interface for data management</p>
+                </div>
+                <div class="endpoint">
+                    <h4>API Health</h4>
+                    <code>http://localhost:8000/api/health/</code>
+                    <p>Health check endpoint</p>
+                </div>
+                <div class="endpoint">
+                    <h4>API Documentation</h4>
+                    <code>http://localhost:8000/api/docs/</code>
+                    <p>Swagger/OpenAPI documentation</p>
+                </div>
+            </div>
+
+            <div class="card">
+                <h2>🗄️ Database Models</h2>
+                <div class="model">
+                    <h4>User Model</h4>
+                    <p>Custom user with profile, bio, avatar</p>
+                </div>
+                <div class="model">
+                    <h4>Post Model</h4>
+                    <p>Posts with content, images, hashtags</p>
+                </div>
+                <div class="model">
+                    <h4>Comment Model</h4>
+                    <p>Nested comments system</p>
+                </div>
+                <div class="model">
+                    <h4>Like Model</h4>
+                    <p>Like system for posts and comments</p>
+                </div>
+                <div class="model">
+                    <h4>Follow Model</h4>
+                    <p>User following system</p>
+                </div>
+                <div class="model">
+                    <h4>Hashtag Model</h4>
+                    <p>Hashtag management and trending</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="card">
+            <h2>⚡ Key Features</h2>
+            <div class="grid">
+                <div class="feature">
+                    <h4>🔐 JWT Authentication</h4>
+                    <p>Secure token-based authentication with refresh tokens</p>
+                </div>
+                <div class="feature">
+                    <h4>📊 GraphQL API</h4>
+                    <p>Modern GraphQL API with Graphene-Django</p>
+                </div>
+                <div class="feature">
+                    <h4>🗄️ PostgreSQL Database</h4>
+                    <p>Robust relational database with complex relationships</p>
+                </div>
+                <div class="feature">
+                    <h4>🚀 Redis Caching</h4>
+                    <p>High-performance caching with Redis</p>
+                </div>
+                <div class="feature">
+                    <h4>⚙️ Celery Tasks</h4>
+                    <p>Asynchronous task processing</p>
+                </div>
+                <div class="feature">
+                    <h4>🐳 Docker Ready</h4>
+                    <p>Containerized deployment with Docker Compose</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="card">
+            <h2>🛠️ Technology Stack</h2>
+            <div class="tech-stack">
+                <span class="tech">Django 4.2.7</span>
+                <span class="tech">GraphQL</span>
+                <span class="tech">PostgreSQL</span>
+                <span class="tech">Redis</span>
+                <span class="tech">Celery</span>
+                <span class="tech">JWT</span>
+                <span class="tech">Docker</span>
+                <span class="tech">Gunicorn</span>
+                <span class="tech">WhiteNoise</span>
+            </div>
+        </div>
+
+        <div class="card">
+            <h2>🎯 Quick Actions</h2>
+            <a href="http://localhost:8000/graphql/" class="btn btn-success">🚀 Open GraphQL</a>
+            <a href="http://localhost:8000/admin/" class="btn">👨‍💼 Admin Panel</a>
+            <a href="http://localhost:8000/api/health/" class="btn">🔍 Health Check</a>
+        </div>
+    </div>
+</body>
+</html>
