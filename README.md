@@ -74,7 +74,7 @@ ALX Project Nexus is a comprehensive social media backend API built with Django 
 
 1. **Clone the repository**
 ```bash
-git clone https://github.com/your-username/alx-project-nexus.git
+git clone https://github.com/donald-alphonso/alx-project-nexus.git
 cd alx-project-nexus
 ```
 
