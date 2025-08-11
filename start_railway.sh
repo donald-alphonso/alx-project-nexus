@@ -6,6 +6,10 @@ export PORT=${PORT:-8000}
 
 echo "🚀 Démarrage ALX Project Nexus sur le port $PORT"
 
+# S'assurer que Django utilise les bons settings pour toutes les commandes
+export DJANGO_SETTINGS_MODULE=${DJANGO_SETTINGS_MODULE:-social_media_backend.settings}
+echo "⚙️  DJANGO_SETTINGS_MODULE=$DJANGO_SETTINGS_MODULE"
+
 # Debug: Afficher les variables d'environnement liées à la base de données
 echo "🔍 DEBUG: Variables d'environnement disponibles:"
 echo "DATABASE_URL: ${DATABASE_URL:-'NON DÉFINIE'}"
@@ -42,6 +46,4 @@ EOF
 
 # Démarrage du serveur
 echo "🌐 Démarrage du serveur Gunicorn..."
-# S'assurer que Django utilise les bons settings
-export DJANGO_SETTINGS_MODULE=social_media_backend.settings
 exec gunicorn social_media_backend.wsgi:application --bind 0.0.0.0:$PORT --workers 2 --timeout 120
