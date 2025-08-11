@@ -14,6 +14,7 @@ import os
 from pathlib import Path
 from decouple import config
 from datetime import timedelta
+import dj_database_url
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -22,7 +23,8 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/5.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'eibdWBbjdl5TIv7TfAo2gYFPCVOdS31yLBVEz9IUKcfCsOUsgfAwgsHQV4h4Z-5pd48'
+# Read from environment; provide a non-production fallback for local/dev only
+SECRET_KEY = config('SECRET_KEY', default='change-me-in-production')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = config('DEBUG', default=False, cast=bool)
@@ -94,15 +96,21 @@ WSGI_APPLICATION = 'social_media_backend.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/5.1/ref/settings/#databases
 
-# FORCE SQLite for Railway deployment
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+# Use DATABASE_URL (PostgreSQL on Railway) if provided, otherwise fallback to SQLite for local/dev
+DATABASE_URL = os.getenv('DATABASE_URL')
+if DATABASE_URL:
+    DATABASES = {
+        'default': dj_database_url.parse(DATABASE_URL, conn_max_age=600, ssl_require=True)
     }
-}
+else:
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.sqlite3',
+            'NAME': BASE_DIR / 'db.sqlite3',
+        }
+    }
+
 print(f" Database configured: {DATABASES['default']['ENGINE']}")
-print(f" Database file: {DATABASES['default']['NAME']}")
 print(f" INSTALLED_APPS count: {len(INSTALLED_APPS)}")
 print(f" DEBUG mode: {DEBUG}")
 print(f" ALLOWED_HOSTS: {ALLOWED_HOSTS}")

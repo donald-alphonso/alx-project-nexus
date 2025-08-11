@@ -7,6 +7,11 @@ from django.urls import path, include
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 from . import views
+from drf_spectacular.views import (
+    SpectacularAPIView,
+    SpectacularSwaggerView,
+    SpectacularRedocView,
+)
 
 # Try to import GraphQL safely
 try:
@@ -140,7 +145,12 @@ urlpatterns = [
     # API endpoints
     path('api/health/', views.api_health, name='api-health'),
     path('api/stats/', views.api_stats, name='api-stats'),
-    path('api/schema/', views.graphql_schema_info, name='api-schema'),
+    # OpenAPI schema and docs
+    path('api/schema/', SpectacularAPIView.as_view(), name='schema'),
+    path('api/docs/', SpectacularSwaggerView.as_view(url_name='schema'), name='swagger-ui'),
+    path('api/redoc/', SpectacularRedocView.as_view(url_name='schema'), name='redoc'),
+    # Keep previous JSON info under a different path
+    path('api/schema-info/', views.graphql_schema_info, name='api-schema-info'),
 ]
 
 # Add GraphQL if available
