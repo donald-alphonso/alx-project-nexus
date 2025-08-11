@@ -2,6 +2,7 @@ version: '3.8'
 
 services:
   db:
+    container_name: alx-project-nexus_db
     image: postgres:16
     volumes:
       - postgres_data:/var/lib/postgresql/data/
@@ -11,13 +12,19 @@ services:
       - POSTGRES_PASSWORD=postgres123
     ports:
       - "5432:5432"
+    networks:
+      - nexus_net
 
   redis:
+    container_name: alx-project-nexus_redis
     image: redis:7.2-alpine
     ports:
       - "6379:6379"
+    networks:
+      - nexus_net
 
   web:
+    container_name: alx-project-nexus_web
     build: .
     command: python manage.py runserver 0.0.0.0:8000
     volumes:
@@ -29,8 +36,11 @@ services:
       - redis
     env_file:
       - .env.docker
+    networks:
+      - nexus_net
 
   celery:
+    container_name: alx-project-nexus_celery
     build: .
     command: celery -A social_media_backend worker --loglevel=info
     volumes:
@@ -40,8 +50,11 @@ services:
       - redis
     env_file:
       - .env.docker
+    networks:
+      - nexus_net
 
   celery-beat:
+    container_name: alx-project-nexus_celery_beat
     build: .
     command: celery -A social_media_backend beat --loglevel=info
     volumes:
@@ -51,6 +64,12 @@ services:
       - redis
     env_file:
       - .env.docker
+    networks:
+      - nexus_net
 
 volumes:
   postgres_data:
+
+networks:
+  nexus_net:
+    driver: bridge
