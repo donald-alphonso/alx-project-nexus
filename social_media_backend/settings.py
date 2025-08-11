@@ -98,10 +98,15 @@ WSGI_APPLICATION = 'social_media_backend.wsgi.application'
 
 # Use DATABASE_URL (PostgreSQL on Railway) if provided, otherwise fallback to SQLite for local/dev
 DATABASE_URL = os.getenv('DATABASE_URL')
+parsed_db = {}
 if DATABASE_URL:
-    DATABASES = {
-        'default': dj_database_url.parse(DATABASE_URL, conn_max_age=600, ssl_require=True)
-    }
+    try:
+        parsed_db = dj_database_url.parse(DATABASE_URL, conn_max_age=600, ssl_require=True)
+    except Exception as e:
+        print(f" Warning: Failed to parse DATABASE_URL: {e}. Falling back to SQLite.")
+
+if parsed_db and parsed_db.get('ENGINE'):
+    DATABASES = {'default': parsed_db}
 else:
     DATABASES = {
         'default': {
@@ -114,6 +119,12 @@ print(f" Database configured: {DATABASES['default']['ENGINE']}")
 print(f" INSTALLED_APPS count: {len(INSTALLED_APPS)}")
 print(f" DEBUG mode: {DEBUG}")
 print(f" ALLOWED_HOSTS: {ALLOWED_HOSTS}")
+
+# Security toggles from environment (useful for Railway)
+SECURE_SSL_REDIRECT = config('SECURE_SSL_REDIRECT', default=False, cast=bool)
+CSRF_TRUSTED_ORIGINS = config(
+    'CSRF_TRUSTED_ORIGINS', default='', cast=lambda v: [s.strip() for s in v.split(',') if s.strip()]
+)
 
 # Password validation
 # https://docs.djangoproject.com/en/5.1/ref/settings/#auth-password-validators
