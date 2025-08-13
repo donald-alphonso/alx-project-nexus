@@ -3,17 +3,11 @@ version: '3.8'
 services:
   db:
     image: postgres:16
-    ports:
-      - "${POSTGRES_PORT:-5432}:5432"  # Port exposé localement pour debug
     restart: always
-    healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER} -d ${POSTGRES_DB}"]
-      interval: 10s
-      retries: 5
-      start_period: 30s
-      timeout: 10s
     volumes:
       - postgres_data:/var/lib/postgresql/data/
+    env_file:
+      - .env
     environment:
       - POSTGRES_DB=${POSTGRES_DB}
       - POSTGRES_USER=${POSTGRES_USER}
@@ -34,79 +28,53 @@ services:
           cpus: '0.3'
 
   backend:
-    build: .
+    build:
+      context: .
     restart: always
     command: gunicorn social_media_backend.wsgi:application --bind 0.0.0.0:8000 --workers 2 --timeout 120
     depends_on:
-      db:
-        condition: service_healthy
+      - db
+      - redis
     volumes:
       - static_volume:/app/staticfiles
       - media_volume:/app/media
-    environment:
-      - DOMAIN=${DOMAIN}
-      - ENVIRONMENT=${ENVIRONMENT}
-      - BACKEND_CORS_ORIGINS=${BACKEND_CORS_ORIGINS}
-      - SECRET_KEY=${SECRET_KEY}
-      - DEBUG=${DEBUG}
-      - ALLOWED_HOSTS=${ALLOWED_HOSTS}
-      - DB_ENGINE=${DB_ENGINE}
-      - DB_NAME=${DB_NAME}
-      - DB_USER=${DB_USER}
-      - DB_PASSWORD=${DB_PASSWORD}
-      - DB_HOST=${DB_HOST}
-      - DB_PORT=${DB_PORT}
-      - REDIS_URL=${REDIS_URL}
-      - CELERY_BROKER_URL=${CELERY_BROKER_URL}
-      - CELERY_RESULT_BACKEND=${CELERY_RESULT_BACKEND}
+    env_file:
+      - .env
     deploy:
       resources:
         limits:
           memory: 1G
           cpus: '0.5'
-    healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:8000/api/health/"]
-      interval: 10s
-      timeout: 5s
-      retries: 5
     labels:
       - traefik.enable=true
       - traefik.docker.network=traefik-public
+      
+      # Service configuration
       - traefik.http.services.${STACK_NAME}-backend.loadbalancer.server.port=8000
+      
+      # HTTPS Router
       - traefik.http.routers.${STACK_NAME}-backend-https.rule=Host(`api.${STACK_NAME}.${DOMAIN}`)
       - traefik.http.routers.${STACK_NAME}-backend-https.entrypoints=https
       - traefik.http.routers.${STACK_NAME}-backend-https.tls=true
       - traefik.http.routers.${STACK_NAME}-backend-https.tls.certresolver=le
+      
+      # HTTP to HTTPS redirect
       - traefik.http.routers.${STACK_NAME}-backend-http.rule=Host(`api.${STACK_NAME}.${DOMAIN}`)
       - traefik.http.routers.${STACK_NAME}-backend-http.entrypoints=http
       - traefik.http.routers.${STACK_NAME}-backend-http.middlewares=https-redirect
-      - traefik.http.middlewares.${STACK_NAME}-backend-compress.compress=true
-      - traefik.http.routers.${STACK_NAME}-backend-https.middlewares=${STACK_NAME}-backend-compress
     networks:
       - traefik-public
-      - default
 
   celery:
-    build: .
+    build:
+      context: .
     restart: always
     command: celery -A social_media_backend worker --loglevel=info
     depends_on:
       - db
       - redis
-    environment:
-      - DOMAIN=${DOMAIN}
-      - ENVIRONMENT=${ENVIRONMENT}
-      - SECRET_KEY=${SECRET_KEY}
-      - DEBUG=${DEBUG}
-      - DB_ENGINE=${DB_ENGINE}
-      - DB_NAME=${DB_NAME}
-      - DB_USER=${DB_USER}
-      - DB_PASSWORD=${DB_PASSWORD}
-      - DB_HOST=${DB_HOST}
-      - DB_PORT=${DB_PORT}
-      - REDIS_URL=${REDIS_URL}
-      - CELERY_BROKER_URL=${CELERY_BROKER_URL}
-      - CELERY_RESULT_BACKEND=${CELERY_RESULT_BACKEND}
+    env_file:
+      - .env
     deploy:
       resources:
         limits:
@@ -114,26 +82,15 @@ services:
           cpus: '0.3'
 
   celery-beat:
-    build: .
+    build:
+      context: .
     restart: always
     command: celery -A social_media_backend beat --loglevel=info
     depends_on:
       - db
       - redis
-    environment:
-      - DOMAIN=${DOMAIN}
-      - ENVIRONMENT=${ENVIRONMENT}
-      - SECRET_KEY=${SECRET_KEY}
-      - DEBUG=${DEBUG}
-      - DB_ENGINE=${DB_ENGINE}
-      - DB_NAME=${DB_NAME}
-      - DB_USER=${DB_USER}
-      - DB_PASSWORD=${DB_PASSWORD}
-      - DB_HOST=${DB_HOST}
-      - DB_PORT=${DB_PORT}
-      - REDIS_URL=${REDIS_URL}
-      - CELERY_BROKER_URL=${CELERY_BROKER_URL}
-      - CELERY_RESULT_BACKEND=${CELERY_RESULT_BACKEND}
+    env_file:
+      - .env
     deploy:
       resources:
         limits:
@@ -148,4 +105,3 @@ volumes:
 networks:
   traefik-public:
     external: true
-  default:
