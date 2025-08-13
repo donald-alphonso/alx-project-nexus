@@ -13,6 +13,7 @@ RUN apt-get update && apt-get install -y \
     build-essential \
     libpq-dev \
     netcat-openbsd \
+    curl \
     && rm -rf /var/lib/apt/lists/*
 
 # Install Poetry
@@ -26,7 +27,10 @@ COPY pyproject.toml poetry.lock* ./
 
 # Install dependencies
 RUN poetry config virtualenvs.create false \
-    && poetry install --no-dev --no-interaction --no-ansi
+    && poetry install --only main --no-interaction --no-ansi
+
+# Create directories for static and media files
+RUN mkdir -p /app/staticfiles /app/media
 
 # Copy project
 COPY . .
@@ -41,5 +45,5 @@ EXPOSE 8000
 # Set entrypoint
 ENTRYPOINT ["/entrypoint.sh"]
 
-# Run the application
-CMD ["gunicorn", "--bind", "0.0.0.0:8000", "social_media_backend.wsgi:application"]
+# Run the application with Gunicorn
+CMD ["gunicorn", "--bind", "0.0.0.0:8000", "--workers", "2", "--timeout", "120", "social_media_backend.wsgi:application"]

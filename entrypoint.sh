@@ -1,37 +1,50 @@
 #!/bin/bash
+set -e
+
+# Function to log messages
+log_message() {
+    echo "[$(date +'%Y-%m-%d %H:%M:%S')] $1"
+}
 
 # Wait for PostgreSQL to be ready
-echo "Waiting for PostgreSQL..."
+log_message "Waiting for PostgreSQL at $DB_HOST:$DB_PORT..."
 while ! nc -z $DB_HOST $DB_PORT; do
-  sleep 0.1
+  sleep 1
+  log_message "Still waiting for PostgreSQL..."
 done
-echo "PostgreSQL started"
+log_message "PostgreSQL is available"
 
 # Apply database migrations
-echo "Applying database migrations..."
-python manage.py makemigrations
-python manage.py migrate
+log_message "Applying database migrations..."
+python manage.py migrate --noinput
 
-# Create superuser if it doesn't exist
-echo "Creating superuser..."
-python manage.py shell -c "
+# Create superuser if explicitly requested
+if [ "$CREATE_SUPERUSER" = "true" ]; then
+  log_message "Creating superuser..."
+  python manage.py shell -c "
 from django.contrib.auth import get_user_model
 User = get_user_model()
-if not User.objects.filter(username='admin').exists():
-    User.objects.create_superuser('admin', 'admin@example.com', 'admin123')
-    print('Superuser created: admin/admin123')
+username = '${ADMIN_USERNAME:-admin}'
+email = '${ADMIN_EMAIL:-admin@example.com}'
+password = '${ADMIN_PASSWORD:-admin123}'
+if not User.objects.filter(username=username).exists():
+    User.objects.create_superuser(username, email, password)
+    print(f'Superuser created: {username}')
 else:
     print('Superuser already exists')
 "
+fi
 
-# Create sample data
-echo "Creating sample data..."
-python manage.py create_sample_data --users 15 --posts 75
+# Create sample data if explicitly requested
+if [ "$CREATE_SAMPLE_DATA" = "true" ]; then
+  log_message "Creating sample data..."
+  python manage.py create_sample_data --users 15 --posts 75
+fi
 
 # Collect static files
-echo "Collecting static files..."
+log_message "Collecting static files..."
 python manage.py collectstatic --noinput
 
 # Start server
-echo "Starting Django server..."
+log_message "Starting Django server with command: $@"
 exec "$@"
