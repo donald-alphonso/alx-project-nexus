@@ -18,23 +18,13 @@ services:
           memory: 512M
           cpus: '0.5'
 
-  redis:
-    image: redis:7.2-alpine
-    restart: always
-    deploy:
-      resources:
-        limits:
-          memory: 256M
-          cpus: '0.3'
-
   backend:
     build:
-      context: .
+      context: /home/${USER}/projects/${PROJECT_NAME}
     restart: always
     command: gunicorn social_media_backend.wsgi:application --bind 0.0.0.0:8000 --workers 2 --timeout 120
     depends_on:
       - db
-      - redis
     volumes:
       - static_volume:/app/staticfiles
       - media_volume:/app/media
@@ -48,54 +38,16 @@ services:
     labels:
       - traefik.enable=true
       - traefik.docker.network=traefik-public
-      
-      # Service configuration
       - traefik.http.services.${STACK_NAME}-backend.loadbalancer.server.port=8000
-      
-      # HTTPS Router
       - traefik.http.routers.${STACK_NAME}-backend-https.rule=Host(`api.${STACK_NAME}.${DOMAIN}`)
       - traefik.http.routers.${STACK_NAME}-backend-https.entrypoints=https
       - traefik.http.routers.${STACK_NAME}-backend-https.tls=true
       - traefik.http.routers.${STACK_NAME}-backend-https.tls.certresolver=le
-      
-      # HTTP to HTTPS redirect
       - traefik.http.routers.${STACK_NAME}-backend-http.rule=Host(`api.${STACK_NAME}.${DOMAIN}`)
       - traefik.http.routers.${STACK_NAME}-backend-http.entrypoints=http
       - traefik.http.routers.${STACK_NAME}-backend-http.middlewares=https-redirect
     networks:
       - traefik-public
-
-  celery:
-    build:
-      context: .
-    restart: always
-    command: celery -A social_media_backend worker --loglevel=info
-    depends_on:
-      - db
-      - redis
-    env_file:
-      - .env
-    deploy:
-      resources:
-        limits:
-          memory: 512M
-          cpus: '0.3'
-
-  celery-beat:
-    build:
-      context: .
-    restart: always
-    command: celery -A social_media_backend beat --loglevel=info
-    depends_on:
-      - db
-      - redis
-    env_file:
-      - .env
-    deploy:
-      resources:
-        limits:
-          memory: 256M
-          cpus: '0.2'
 
 volumes:
   postgres_data:
